@@ -1,7 +1,7 @@
 # Architecture
 
-:heavy_check_mark:_(COMMENT) Add a description of the architecture of your application and create a diagram like the one below. Link to the diagram in this document._
+Below is the architecture of this project. It starts with an angular frontend that connects with a java backend through the API gateway. Within the java backend there are 3 services with each there own database. All services connect to the message bus. The Reviewservice and the PostService and the PostService and the CommentService are connected via Open-Feign.  There is also a Eureka and Config server present in the java backend.
 
-![eShopOnContainers Architecture](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/media/eshoponcontainers-development-architecture.png)
+<img src="./architecture.png"/>
 
-[Source](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/introduce-eshoponcontainers-reference-app)
+there is also a .drawio file to view the diagram in [draw.io](https://www.draw.io)

@@ -1,6 +1,6 @@
 # Fullstack Java Project
 
-## Firstname Lastname (Class)
+## Sander Baens (2tinA)
 Change the name and Class in the title above
 
 ## Folder structure
