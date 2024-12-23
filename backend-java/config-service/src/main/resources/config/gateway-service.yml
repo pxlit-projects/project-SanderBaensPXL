@@ -1,0 +1,36 @@
+server:
+  port: 8086
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[**]':
+            allowedOrigins:
+              - "localhost"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+      discover:
+        locator:
+          enabled: true
+      routes:
+        - id: post-service
+          uri: lb://post-service
+          predicates:
+            - Path=/post/**
+          filters:
+            - RewritePath=/post/(?<path>.*), /$\{path}
+        - id: review-service
+          uri: lb://review-service
+          predicates:
+            - Path=/review/**
+          filters:
+            - RewritePath=/review/(?<path>.*), /$\{path}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8061/eureka/
