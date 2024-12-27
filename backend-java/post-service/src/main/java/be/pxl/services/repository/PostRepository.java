@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostsByAcceptedAndAuthor(boolean accepted, String author);
-    List<Post> findPostByAccepted(boolean accepted);
+    List<Post> findPostsByAccepted(boolean accepted);
 }

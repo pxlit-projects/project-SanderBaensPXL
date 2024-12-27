@@ -25,8 +25,8 @@ public class PostController {
     public void updatePost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long id, @RequestBody PostRequest postRequest) {postService.updatePost(role, name, id, postRequest);}
 
     @GetMapping(path = "unaccepted")
-    public ResponseEntity<List<PostResponse>> getUnacceptedPost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name) {
-        List<PostResponse> unacceptedPosts = postService.findUnaccepted(role, name);
+    public ResponseEntity<List<PostResponse>> getUnacceptedPost(@RequestHeader("X-Role") String role) {
+        List<PostResponse> unacceptedPosts = postService.findUnaccepted(role);
         return new ResponseEntity<>(unacceptedPosts, HttpStatus.OK);
     }
 
@@ -35,4 +35,8 @@ public class PostController {
         List<PostResponse> unacceptedPosts = postService.findAccepted();
         return new ResponseEntity<>(unacceptedPosts, HttpStatus.OK);
     }
+
+    @PutMapping(path = "approve/{id}")
+    public void approvePost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long id) {postService.approvePost(role, name, id);}
+
 }

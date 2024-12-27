@@ -62,18 +62,35 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public List<PostResponse> findUnaccepted(String role, String name) {
+    public List<PostResponse> findUnaccepted(String role) {
         if (!Objects.equals(role, "admin")) {
             throw new UnauthorizedException("Admin role required");
         }
 
-        List<Post> unacceptedPosts = postRepository.findPostsByAcceptedAndAuthor(false, name);
+        List<Post> unacceptedPosts = postRepository.findPostsByAccepted(false);
         return unacceptedPosts.stream().map(this::mapToPostResponse).toList();
     }
 
     @Override
     public List<PostResponse> findAccepted() {
-        List<Post> acceptedPosts = postRepository.findPostByAccepted(true);
+        List<Post> acceptedPosts = postRepository.findPostsByAccepted(true);
         return acceptedPosts.stream().map(this::mapToPostResponse).toList();
+    }
+
+    @Override
+    public void approvePost(String role, String name, long id) {
+        if (!Objects.equals(role, "admin")) {
+            throw new UnauthorizedException("Admin role required");
+        }
+
+        Post existingPost = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post with ID " + id + " not found"));
+
+        if (Objects.equals(name, existingPost.getAuthor())) {
+            throw new UnauthorizedException("You cannot approve your own post");
+        }
+
+        existingPost.setAccepted(true);
+        postRepository.save(existingPost);
     }
 }

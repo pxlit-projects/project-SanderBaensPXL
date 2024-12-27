@@ -10,7 +10,9 @@ public interface IPostService {
 
     void updatePost(String role, String name, long id, PostRequest postRequest);
 
-    List<PostResponse> findUnaccepted(String role, String name);
+    List<PostResponse> findUnaccepted(String role);
 
     List<PostResponse> findAccepted();
+
+    void approvePost(String role, String name, long id);
 }
