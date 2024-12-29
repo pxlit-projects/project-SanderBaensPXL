@@ -6,7 +6,7 @@ import be.pxl.services.controller.dto.PostResponse;
 import java.util.List;
 
 public interface IPostService {
-    void addPost(String role, String name, PostRequest postRequest);
+    void addPost(String role, String name, String email, PostRequest postRequest);
 
     void updatePost(String role, String name, long id, PostRequest postRequest);
 
@@ -15,4 +15,9 @@ public interface IPostService {
     List<PostResponse> findAccepted();
 
     void approvePost(String role, String name, long id);
+
+    PostResponse findPostById(long id);
+
+    String getEmailByPostId(long id);
+
 }

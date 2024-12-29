@@ -19,7 +19,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addPost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @RequestBody PostRequest postRequest) {postService.addPost(role, name, postRequest);}
+    public void addPost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @RequestHeader("X-Email") String email, @RequestBody PostRequest postRequest) {postService.addPost(role, name, email, postRequest);}
 
     @PutMapping(path = "{id}")
     public void updatePost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long id, @RequestBody PostRequest postRequest) {postService.updatePost(role, name, id, postRequest);}
@@ -39,4 +39,15 @@ public class PostController {
     @PutMapping(path = "approve/{id}")
     public void approvePost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long id) {postService.approvePost(role, name, id);}
 
+    @GetMapping(path = "{id}")
+    public ResponseEntity<PostResponse> getPostById(@PathVariable long id){
+        PostResponse response = postService.findPostById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "{id}/email")
+    public ResponseEntity<String> getEmailByPostId(@PathVariable long id) {
+        String email = postService.getEmailByPostId(id);
+        return new ResponseEntity<>(email, HttpStatus.OK);
+    }
 }

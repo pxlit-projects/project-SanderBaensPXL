@@ -28,7 +28,7 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void addPost(String role, String name, PostRequest postRequest) {
+    public void addPost(String role, String name, String email, PostRequest postRequest) {
         if (!Objects.equals(role, "admin")) {
             throw new UnauthorizedException("Admin role required");
         }
@@ -37,6 +37,7 @@ public class PostService implements IPostService {
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
                 .author(name)
+                .email(email)
                 .createdDate(LocalDateTime.now())
                 .accepted(false)
                 .build();
@@ -93,4 +94,20 @@ public class PostService implements IPostService {
         existingPost.setAccepted(true);
         postRepository.save(existingPost);
     }
+
+    @Override
+    public PostResponse findPostById(long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post with ID " + id + " not found"));
+        return mapToPostResponse(post);
+    }
+
+    @Override
+    public String getEmailByPostId(long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Post with ID " + id + " not found"));
+        return post.getEmail();
+    }
+
+
 }

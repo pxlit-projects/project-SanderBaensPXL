@@ -9,19 +9,17 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="post")
+@Table(name="comment")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String title;
-    private String content;
     private String author;
-    private String email;
+    private String comment;
     private LocalDateTime createdDate;
-    private boolean accepted;
+    private long postId;
 }
