@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "post-service")
 public interface PostClient {
 
-    @PutMapping("api/post/approve/{id}")
+    @PutMapping("api/approve/{id}")
     void approvePost(@PathVariable("id") long id, @RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name);
 
-    @GetMapping("api/post/{id}/email")
+    @GetMapping("api/{id}/email")
     String getEmailByPostId(@PathVariable("id") long id);
 }

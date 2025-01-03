@@ -6,6 +6,7 @@
         <set>
           <option value="X-Role" />
           <option value="X-Name" />
+          <option value="X-Email" />
         </set>
       </option>
     </inspection_tool>
