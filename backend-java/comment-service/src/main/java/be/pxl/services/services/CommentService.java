@@ -20,6 +20,7 @@ public class CommentService implements ICommentService {
 
     private CommentResponse mapToCommentResponse(Comment comment) {
         return CommentResponse.builder()
+                .id(comment.getId())
                 .author(comment.getAuthor())
                 .comment(comment.getComment())
                 .createdDate(comment.getCreatedDate())
@@ -48,7 +49,7 @@ public class CommentService implements ICommentService {
         Comment existingComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment with ID " + postId + " not found"));
 
-        if (Objects.equals(name, existingComment.getAuthor())) {
+        if (!Objects.equals(name, existingComment.getAuthor())) {
             throw new UnauthorizedException("You can only change your own comments");
         }
         existingComment.setComment(commentRequest.getComment());
@@ -60,7 +61,7 @@ public class CommentService implements ICommentService {
         Comment existingComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment with ID " + postId + " not found"));
 
-        if (Objects.equals(name, existingComment.getAuthor())) {
+        if (!Objects.equals(name, existingComment.getAuthor())) {
             throw new UnauthorizedException("You can only delete your own comments");
         }
 
