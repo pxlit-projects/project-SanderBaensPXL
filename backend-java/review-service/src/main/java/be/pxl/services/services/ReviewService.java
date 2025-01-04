@@ -23,6 +23,7 @@ public class ReviewService implements IReviewService {
 
     private ReviewResponse mapToPostResponse(Review review) {
         return ReviewResponse.builder()
+                .author(review.getAuthor())
                 .comment(review.getComment())
                 .build();
     }
@@ -52,11 +53,12 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public void declineReview(String role, long postId, ReviewRequest request) {
+    public void declineReview(String role, String name, long postId, ReviewRequest request) {
         if (!Objects.equals(role, "admin")) {
             throw new UnauthorizedException("Admin role required");
         }
         Review review = Review.builder()
+                .author(name)
                 .comment(request.getComment())
                 .postId(postId)
                 .build();

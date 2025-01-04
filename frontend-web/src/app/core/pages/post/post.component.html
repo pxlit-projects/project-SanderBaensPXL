@@ -1,1 +1,98 @@
-<p>post works!</p>
+<div class="container mx-auto p-4 flex flex-row justify-between h-[calc(100vh-98px)] items-center">
+  @if (post) {
+    <div class="max-w-lg w-full max-h-fit p-6 bg-base-300 rounded-lg shadow-lg">
+      @if (!isEditing) {
+        <h1 class="text-3xl font-bold mb-4">{{post.title}}</h1>
+        <p class="mb-4">{{post.content}}</p>
+        <div class="text-sm text-base-content/70 flex justify-between mt-4 items-center">
+          <div>
+            <p>Author: {{post.author}}</p>
+            <p>Created: {{post.createdDate | date: 'dd/MM/yyyy HH:mm'}}</p>
+          </div>
+          @if (authService.checkRole("admin") && authService.checkName(post.author) && !post.accepted) {
+            <button class="btn btn-primary inline-block" (click)="startEditing()">Update Post</button>
+          }
+        </div>
+      }
+      @if (isEditing) {
+        <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="space-y-4">
+          <div class="form-control">
+            <label for="title" class="label">
+              <span class="label-text">Title</span>
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              class="input input-bordered w-full"
+              [(ngModel)]="request.title"
+              #title="ngModel"
+              required
+              placeholder="Enter title"
+              pattern="^[a-zA-Z\s]*$"
+            />
+            @if (title.invalid && title.touched) {
+              <p class="text-error text-xs mt-1">
+                Title is required and can only contain letters and spaces.
+              </p>
+            }
+          </div>
+
+          <div class="form-control">
+            <label for="content" class="label">
+              <span class="label-text">Content</span>
+            </label>
+            <textarea
+              id="content"
+              name="content"
+              class="textarea textarea-bordered h-24 w-full"
+              [(ngModel)]="request.content"
+              #content="ngModel"
+              required
+              placeholder="Enter content"
+            ></textarea>
+            @if (content.invalid && content.touched) {
+              <p class="text-error text-xs mt-1">
+                Content is required.
+              </p>
+            }
+          </div>
+
+          <div class="form-control flex flex-row justify-between">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="myForm.invalid"
+            >
+              Update Post
+            </button>
+            <button type="button" class="btn btn-outline btn-primary" (click)="cancelEditing()">Cancel</button>
+          </div>
+        </form>
+      }
+    </div>
+  } @else if (error) {
+    <div class="alert alert-error">
+      {{error}}
+    </div>
+  }
+
+  @if(!post?.accepted){
+    <app-review class="overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-120px)]"   [author]="post?.author || ''"></app-review>
+  }
+  @else{
+    <app-comment class="overflow-y-scroll overflow-x-hidden max-h-[calc(100vh-120px)]"></app-comment>
+  }
+
+  @if (submitSuccess) {
+    <div class="alert alert-success mt-4">
+      Post updated successfully!
+    </div>
+  }
+
+  @if (submitError) {
+    <div class="alert alert-error mt-4">
+      Error updating post. Please try again.
+    </div>
+  }
+</div>

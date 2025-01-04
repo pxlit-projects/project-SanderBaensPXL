@@ -10,5 +10,5 @@ public interface IReviewService {
 
     void approveReview(String role, String name, long postId);
 
-    void declineReview(String role, long postId, ReviewRequest request);
+    void declineReview(String role, String name, long postId, ReviewRequest request);
 }

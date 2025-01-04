@@ -66,4 +66,8 @@ export class AuthService {
   public checkRole(role: string): boolean {
     return this.role === role;
   }
+
+  public checkName(name: string): boolean {
+    return this.name === name;
+  }
 }

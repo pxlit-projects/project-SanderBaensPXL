@@ -31,7 +31,7 @@ public class ReviewController {
 
     @PostMapping(path = "decline/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void declineReview(@RequestHeader("X-Role") String role, @PathVariable long postId, @RequestBody ReviewRequest request) {
-        reviewService.declineReview(role, postId, request);
+    public void declineReview(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long postId, @RequestBody ReviewRequest request) {
+        reviewService.declineReview(role, name, postId, request);
     }
 }

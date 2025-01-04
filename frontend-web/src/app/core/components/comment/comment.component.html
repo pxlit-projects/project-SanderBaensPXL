@@ -1,0 +1,52 @@
+<h1 class="font-bold text-4xl mb-4 flex justify-center">Comments</h1>
+
+<div class="w-[500px] mb-4">
+  <textarea
+    class="textarea textarea-bordered w-full"
+    [(ngModel)]="newComment"
+    placeholder="Add a new comment"
+  ></textarea>
+  <button class="btn btn-primary w-full mt-2" (click)="addComment()">Add Comment</button>
+</div>
+
+<div class="divider"></div>
+
+@for(comment of comments; track comment.id){
+  <div class="w-[500px] max-h-fit p-6 bg-base-300 rounded-lg shadow-lg mb-2">
+    @if(editingComment && editingComment.id === comment.id){
+      <textarea
+        class="textarea textarea-bordered w-full mb-2"
+        [(ngModel)]="editingComment.comment"
+      ></textarea>
+      <div class="flex justify-end gap-2">
+        <button class="btn btn-sm btn-primary" (click)="updateComment()">Save</button>
+        <button class="btn btn-sm" (click)="editingComment = null">Cancel</button>
+      </div>
+    }
+    @else {
+      <p class="mb-4">{{comment.comment}}</p>
+      <div class="text-sm text-base-content/70 flex justify-between mt-4 items-center">
+        <div>
+          <p>Author: {{comment.author}}</p>
+          <p>Date: {{comment.createdDate | date:'medium'}}</p>
+        </div>
+        @if(authService.checkName(comment.author)){
+          <div>
+            <button class="btn btn-sm btn-ghost" (click)="startEditing(comment)">Edit</button>
+            <button class="btn btn-sm btn-ghost text-error" (click)="deleteComment(comment.id)">Delete</button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
+
+@if(comments.length === 0){
+  <p class="mb-4 w-[500px] text-center">No comments yet</p>
+}
+
+@if (error) {
+  <div class="alert alert-error">
+    {{error}}
+  </div>
+}
