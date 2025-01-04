@@ -36,14 +36,14 @@ public class PostController {
         return new ResponseEntity<>(unacceptedPosts, HttpStatus.OK);
     }
 
-    @PutMapping(path = "approve/{id}")
-    public void approvePost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long id) {postService.approvePost(role, name, id);}
-
     @GetMapping(path = "{id}")
     public ResponseEntity<PostResponse> getPostById(@PathVariable long id){
         PostResponse response = postService.findPostById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PutMapping(path = "approve/{id}")
+    public void approvePost(@RequestHeader("X-Role") String role, @RequestHeader("X-Name") String name, @PathVariable long id) {postService.approvePost(role, name, id);}
 
     @GetMapping(path = "{id}/email")
     public ResponseEntity<String> getEmailByPostId(@PathVariable long id) {

@@ -20,10 +20,12 @@ public class PostService implements IPostService {
 
     private PostResponse mapToPostResponse(Post post) {
         return PostResponse.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .author(post.getAuthor())
                 .createdDate(post.getCreatedDate())
+                .accepted(post.isAccepted())
                 .build();
     }
 
