@@ -33,13 +33,13 @@ export class AuthService {
     return new User(this.role, this.name, this.email);
   }
 
-  public login(role: string, name: string, email: string) {
-    this.role = role;
-    this.name = name;
-    this.email = email;
-    localStorage.setItem('role', role);
-    localStorage.setItem('name', name);
-    localStorage.setItem('email', email);
+  public login(user: User) {
+    this.role = user.role
+    this.name = user.name;
+    this.email = user.email;
+    localStorage.setItem('role', user.role);
+    localStorage.setItem('name', user.name);
+    localStorage.setItem('email', user.email);
   }
 
   public logout() {
@@ -53,10 +53,17 @@ export class AuthService {
 
   public getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
     headers = headers.set("X-Role", this.role);
     headers = headers.set("X-Name", this.name);
     headers = headers.set("X-Email", this.email);
     return headers;
+  }
+
+  public checkLogin(): boolean {
+    return this.role !== "";
+  }
+
+  public checkRole(role: string): boolean {
+    return this.role === role;
   }
 }

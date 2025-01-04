@@ -1,1 +1,32 @@
-<router-outlet></router-outlet>
+<nav class="navbar bg-base-300 shadow-lg mb-8 flex justify-evenly">
+  <a
+    [routerLink]="['/posts', 'accepted']"
+    routerLinkActive="btn-active"
+    class="btn btn-secondary normal-case">
+    Posts
+  </a>
+  @if(this.authService.checkRole("admin")){
+    <a
+      [routerLink]="['/posts', 'unaccepted']"
+      routerLinkActive="btn-active"
+      class="btn btn-secondary normal-case">
+      Pending Posts
+    </a>
+
+    <a
+      [routerLink]="['/post/add']"
+      routerLinkActive="btn-active"
+      class="btn btn-secondary normal-case">
+      Add Post
+    </a>
+  }
+  <a [routerLink]="['/']" class="btn btn-secondary" (click)="authService.logout()">Logout</a>
+</nav>
+
+@if(this.authService.checkLogin()){
+  <router-outlet></router-outlet>
+}
+@else{
+  <app-login></app-login>
+}
+

@@ -1,0 +1,70 @@
+<h1 class="font-bold text-4xl mb-4 flex justify-center">Add post</h1>
+<div class="max-w-md mx-auto p-6 bg-base-300 rounded-lg shadow-lg">
+  <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="space-y-4">
+
+    <div class="form-control">
+      <label for="title" class="label">
+        <span class="label-text">Title</span>
+      </label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        class="input input-bordered w-full"
+        [(ngModel)]="request.title"
+        #title="ngModel"
+        required
+        placeholder="Enter title"
+        pattern="^[a-zA-Z\s]*$"
+      />
+      @if (title.invalid && title.touched) {
+        <p class="text-error text-xs mt-1">
+          Title is required and can only contain letters and spaces.
+        </p>
+      }
+    </div>
+
+    <div class="form-control">
+      <label for="content" class="label">
+        <span class="label-text">Content</span>
+      </label>
+      <textarea
+        id="content"
+        name="content"
+        class="textarea textarea-bordered h-24 w-full"
+        [(ngModel)]="request.content"
+        #content="ngModel"
+        required
+        placeholder="Enter content"
+      ></textarea>
+      @if (content.invalid && content.touched) {
+        <p class="text-error text-xs mt-1">
+          Content is required.
+        </p>
+      }
+    </div>
+
+
+    <div class="form-control">
+      <button
+        type="submit"
+        class="btn btn-primary w-full"
+        [disabled]="myForm.invalid"
+      >
+        Add Post
+      </button>
+    </div>
+  </form>
+
+  @if (submitSuccess) {
+    <div class="alert alert-success mt-4">
+      Post added successfully!
+    </div>
+  }
+
+  @if (submitError) {
+    <div class="alert alert-error mt-4">
+      Error adding post. Please try again.
+    </div>
+  }
+</div>
