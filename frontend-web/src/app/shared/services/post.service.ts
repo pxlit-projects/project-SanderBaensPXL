@@ -1,7 +1,7 @@
 import {forwardRef, Inject, Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AuthService} from "./auth.service";
-import {environment} from "../../../environments/environment.development";
+import {environment} from "../../../environments/environment";
 import { PostRequest } from '../model/post-request.model';
 import {Post} from "../model/post.model";
 import {catchError, throwError} from "rxjs";
