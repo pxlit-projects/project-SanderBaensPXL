@@ -2,6 +2,8 @@ package be.pxl.services.handler;
 
 import be.pxl.services.service.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
 public class MessageHandler {
 
     private final EmailService emailService;
+    private static final Logger log = LoggerFactory.getLogger(MessageHandler.class);
+
 
     @RabbitListener(queues = "reviewQueue")
     public void handleReviewMessage(String message) {
@@ -22,6 +26,7 @@ public class MessageHandler {
         String body = composeEmailBody(postId, status);
 
         emailService.sendEmail(authorEmail, subject, body);
+        log.info("Mail sent to {}", authorEmail);
     }
 
     private String composeEmailBody(String postId, String status) {

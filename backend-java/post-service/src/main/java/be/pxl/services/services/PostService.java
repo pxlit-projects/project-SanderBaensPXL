@@ -6,6 +6,8 @@ import be.pxl.services.domain.Post;
 import be.pxl.services.exception.UnauthorizedException;
 import be.pxl.services.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PostService implements IPostService {
 
+    private static final Logger log = LoggerFactory.getLogger(PostService.class);
     private final PostRepository postRepository;
 
     private PostResponse mapToPostResponse(Post post) {
@@ -32,6 +35,7 @@ public class PostService implements IPostService {
     @Override
     public void addPost(String role, String name, String email, PostRequest postRequest) {
         if (!Objects.equals(role, "admin")) {
+            log.warn("Admin role required for adding post");
             throw new UnauthorizedException("Admin role required");
         }
 
@@ -49,6 +53,7 @@ public class PostService implements IPostService {
     @Override
     public void updatePost(String role, String name, long id, PostRequest postRequest) {
         if (!Objects.equals(role, "admin")) {
+            log.warn("Admin role required for updating post");
             throw new UnauthorizedException("Admin role required");
         }
 
@@ -56,6 +61,7 @@ public class PostService implements IPostService {
                 .orElseThrow(() -> new IllegalArgumentException("Post with ID " + id + " not found"));
 
         if (!Objects.equals(name, existingPost.getAuthor())) {
+            log.warn("User {} tried to change a post of user {}", name, existingPost.getAuthor());
             throw new UnauthorizedException("You must be logged in as the author");
         }
 
@@ -67,6 +73,7 @@ public class PostService implements IPostService {
     @Override
     public List<PostResponse> findUnaccepted(String role) {
         if (!Objects.equals(role, "admin")) {
+            log.warn("Admin role required for finding unaccepted posts");
             throw new UnauthorizedException("Admin role required");
         }
 
@@ -83,6 +90,7 @@ public class PostService implements IPostService {
     @Override
     public void approvePost(String role, String name, long id) {
         if (!Objects.equals(role, "admin")) {
+            log.warn("Admin role required for approving post");
             throw new UnauthorizedException("Admin role required");
         }
 
@@ -90,6 +98,7 @@ public class PostService implements IPostService {
                 .orElseThrow(() -> new IllegalArgumentException("Post with ID " + id + " not found"));
 
         if (Objects.equals(name, existingPost.getAuthor())) {
+            log.warn("User {} tried to approve his own post", name);
             throw new UnauthorizedException("You cannot approve your own post");
         }
 

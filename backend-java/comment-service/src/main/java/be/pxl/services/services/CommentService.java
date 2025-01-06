@@ -6,6 +6,8 @@ import be.pxl.services.domain.Comment;
 import be.pxl.services.exception.UnauthorizedException;
 import be.pxl.services.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import java.util.Objects;
 public class CommentService implements ICommentService {
 
     private final CommentRepository commentRepository;
+    private static final Logger log = LoggerFactory.getLogger(CommentService.class);
 
     private CommentResponse mapToCommentResponse(Comment comment) {
         return CommentResponse.builder()
@@ -47,9 +50,11 @@ public class CommentService implements ICommentService {
     @Override
     public void updateComment(String name, long postId, long commentId, CommentRequest commentRequest) {
         Comment existingComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment with ID " + postId + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Comment with ID " + commentId + " not found"));
+        log.warn("Comment with ID {} not found", commentId);
 
         if (!Objects.equals(name, existingComment.getAuthor())) {
+            log.warn("User {} tried to change a comment of user {}", name, existingComment.getAuthor());
             throw new UnauthorizedException("You can only change your own comments");
         }
         existingComment.setComment(commentRequest.getComment());
@@ -59,9 +64,11 @@ public class CommentService implements ICommentService {
     @Override
     public void deleteComment(String name, long postId, long commentId) {
         Comment existingComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment with ID " + postId + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Comment with ID " + commentId + " not found"));
+        log.warn("Comment with ID {} not found", commentId);
 
         if (!Objects.equals(name, existingComment.getAuthor())) {
+            log.warn("User {} tried to delete a comment of user {}", name, existingComment.getAuthor());
             throw new UnauthorizedException("You can only delete your own comments");
         }
 
