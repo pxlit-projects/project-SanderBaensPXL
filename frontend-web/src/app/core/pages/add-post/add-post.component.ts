@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {Component, inject, ViewChild} from '@angular/core';
+import {FormsModule, NgForm} from "@angular/forms";
 import {PostRequest} from "../../../shared/model/post-request.model";
 import {PostService} from "../../../shared/services/post.service";
+import {CanComponentDeactivate} from "../../../shared/guards/unsaved-changes.guard";
 
 @Component({
   selector: 'app-add-post',
@@ -10,7 +11,8 @@ import {PostService} from "../../../shared/services/post.service";
   templateUrl: './add-post.component.html',
   styleUrl: './add-post.component.css'
 })
-export class AddPostComponent {
+export class AddPostComponent implements CanComponentDeactivate{
+  @ViewChild('myForm') myForm!: NgForm;
   postService: PostService = inject(PostService);
   request: PostRequest = new PostRequest("", "");
 
@@ -34,5 +36,9 @@ export class AddPostComponent {
         }
       });
     }
+  }
+
+  hasUnsavedChanges(): boolean | null{
+    return this.myForm.dirty;
   }
 }
