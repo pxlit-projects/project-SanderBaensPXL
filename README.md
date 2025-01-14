@@ -1,6 +1,7 @@
 # Fullstack Java Project
 
 ## Sander Baens (3AONA)
+
 Change the name and Class in the title above
 
 ## Folder structure
@@ -17,4 +18,40 @@ Each folder contains its own specific `.gitignore` file.
 
 ## How to setup and run this application
 
-:heavy_check_mark:_(COMMENT) Add setup instructions and provide some direction to run the whole  application: frontend to backend._
+### Backend
+
+**Running the application:**
+
+1. start a rabbitmq docker container
+
+2. start the services in the following order
+   
+   1. config-service
+   
+   2. discovery-service
+   
+   3. gateway-service
+   
+   4. messaging-service
+   
+   5. post-service
+   
+   6. review-service
+   
+   7. comment-service
+
+### Frontend
+
+**Running the application:**
+
+- Run `npm install` and `ng build`
+
+- Run `docker build -t fullstack-angular .` in a terminal in the same folder as the Dockerfile
+
+- Then run `docker run -d -p 80:80 fullstack-angular` 
+
+- Go to `http://localhost`
+
+**Testing:**
+
+- run `ng test`

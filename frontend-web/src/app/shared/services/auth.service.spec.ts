@@ -9,6 +9,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     localStorageSpy = jasmine.createSpyObj('localStorage', ['getItem', 'setItem', 'removeItem']);
+    spyOnProperty(window, 'localStorage').and.returnValue(localStorageSpy);
 
     TestBed.configureTestingModule({
       providers: [
